@@ -1,4 +1,4 @@
-![Microsoft Cloud Workshops](https://github.com/Microsoft/MCW-Template-Cloud-Workshop/raw/main/Media/ms-cloud-workshop.png "Microsoft Cloud Workshops")
+![Microsoft Cloud Workshops](https://github.com/stiglyt/MCW-Template-Cloud-Workshop/raw/main/Media/ms-cloud-workshop.png "Microsoft Cloud Workshops")
 
 <div class="MCWHeader1">
 Continuous delivery in Azure DevOps
@@ -44,7 +44,7 @@ You should follow all steps in this document *before* performing the Hands-on la
 
 ## Requirements
 
-1. Microsoft Azure subscription must be pay-as-you-go or MSDN.
+1. Microsoft Azure subscription will be provided for the workshop. If using your own, it must be pay-as-you-go or MSDN.
 
    - Trial subscriptions will _not_ work
 
@@ -60,9 +60,15 @@ You should follow all steps in this document *before* performing the Hands-on la
 
     - A browser, preferably Chrome for consistency with the lab implementation tests.
 
-4. Git for Windows
+[4. Git for Windows](https://gitforwindows.org/)
 
 5. PowerShell
+
+6. [Docker Desktop for Windows](https://www.docker.com/get-started/)
+
+7. [Azure CLI](https://docs.microsoft.com/en-us/cli/azure/)
+
+8. [Node.js](https://nodejs.org/en/download/) (This lab has been tested with Node.js version 16.13.0, which includes npm 8.1.0.)
 
 ## Before the hands-on lab
 
@@ -115,7 +121,7 @@ In this task, you will create an account in [GitHub](https://github.com) and use
 - You should now be in `C:\Workspaces\lab`. Type the following command and press `<ENTER>`:
 
  ```pwsh
- git clone https://github.com/microsoft/MCW-Continuous-delivery-in-Azure-DevOps.git
+ git clone https://github.com/stiglyt/MCW-Continuous-delivery-in-Azure-DevOps.git
  ```
 
 - Within the `lab` folder, create a folder for the GitHub repository created in Step 1 and navigate to it in PowerShell.
@@ -161,40 +167,5 @@ In this task, you will create an account in [GitHub](https://github.com) and use
 3. Copy the GitHub Personal Access Token somewhere safe and accessible for later use during the lab. **DO NOT COMMIT THIS VALUE TO YOUR REPO!**
 
     ![The GitHub Personal Access Token. This is a secret value that should be stored somewhere safe and accessible.](media/b4-task2-step3-1.png "Created GitHub Personal Access Token")
-
-### Task 3: Create Azure DevOps Personal Access Token
-
-1. Log in to your existing Azure DevOps account or create a new account on <https://dev.azure.com/>.
-
-    ![The Azure DevOps Portal.](media/b4-task3-step1-1.png "Azure DevOps Portal")
-
-2. Create an Azure DevOps Personal Access Token as [described here](https://docs.microsoft.com/en-us/azure/devops/organizations/accounts/use-personal-access-tokens-to-authenticate?view=azure-devops&tabs=preview-page). For this lab, please ensure your Azure DevOps Personal Access Token is configured with a `Full access` scope.
-
-    > **Note**: A `Full access` scope is not recommended for Azure DevOps Personal Access Tokens in live development and production environments. We are only using this scope for this lab.
-
-    ![The Azure DevOps Create Personal Access Token Form.](media/b4-task3-step2-1.png "Create Azure DevOps Personal Access Token")
-
-3. Copy the Azure DevOps Personal Access Token somewhere safe and accessible to you for later use during the lab. **DO NOT COMMIT THIS VALUE TO YOUR REPO!**
-
-    ![The Azure DevOps Personal Access Token created in the previous step.](media/b4-task3-step3-1.png "Created Azure DevOps Personal Access Token")
-
-### Task 4: Create Azure DevOps Project
-
-1. Create a `Fabrikam` project in Azure DevOps for use in the lab with the following settings:
-
-   - **Project name**: `Fabrikam`
-   - **Visibility**: `Private`
-
-   ![Create a project to get started.](media/b4-task4-step1.png "Created an Azure DevOps project")
-
-   - Under the **Advanced** settings, be sure to select the following values:
-     - **Version control**: `Git`
-     - **Work item process**: `Basic`
-
-   - Select the **Create project** button.
-
-2. To complete Exercise 3: Task 3 in the Hands on Lab, the student will need to request a free grant of parallel jobs in Azure Pipelines via [this form](https://aka.ms/azpipelines-parallelism-request). More information can be found [here regarding changes in Azure Pipelines Grant for Public Projects](https://devblogs.microsoft.com/devops/change-in-azure-pipelines-grant-for-public-projects/).
-
-    > **Note**: The Azure DevOps Parallelism Request can take 2-3 business days to process the request.
 
 You should follow all steps provided *before* performing the Hands-on lab.
