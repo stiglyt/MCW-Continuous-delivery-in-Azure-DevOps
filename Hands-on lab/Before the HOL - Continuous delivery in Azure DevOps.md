@@ -58,7 +58,7 @@ You should follow all steps in this document *before* performing the Hands-on la
 
     - A browser, preferably Chrome for consistency with the lab implementation tests.
 
-[4. Git for Windows](https://gitforwindows.org/)
+4. [Git for Windows](https://gitforwindows.org/)
 
 5. PowerShell
 
