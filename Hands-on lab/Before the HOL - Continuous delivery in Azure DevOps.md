@@ -40,8 +40,6 @@ Microsoft and the trademarks listed at <https://www.microsoft.com/en-us/legal/in
 
 You should follow all steps in this document *before* performing the Hands-on lab. Pay close attention to product versions, as the version numbers called out in the lab have been tested and shown successful for the lab.
 
-> **Note**: If the students need to use Microsoft-hosted Azure Pipelines Agents, [Task 4: Create Azure DevOps Project](#task--4-create-azure-devops-project) will need to be completed at least **2-3 business days** before the lab in order to run parallel jobs in Azure DevOps. The other option is to use self-hosted agents. If you need to go the self-hosted route, refer to the [Azure Pipelines Agents documentation](https://docs.microsoft.com/en-us/azure/devops/pipelines/agents/agents?view=azure-devops&tabs=browser).
-
 ## Requirements
 
 1. Microsoft Azure subscription will be provided for the workshop. If using your own, it must be pay-as-you-go or MSDN.
