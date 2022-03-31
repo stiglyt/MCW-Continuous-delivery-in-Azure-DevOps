@@ -235,9 +235,9 @@ Now that we have Docker images working locally, we can now work on the automatio
 
 1. Select the `Settings` tab from your lab files repository in GitHub.
 
-2. Select the `Secrets` blade from the left navigation bar.
+2. Select the `Secrets - Actions` blade from the left navigation bar.
 
-    ![The GitHub Repository Settings tab.](media/hol-ex1-task4-step2-1.png "GitHub Repository Settings")
+    ![The GitHub Repository Settings tab.](media/hol-ex1-task4-step2-1-new.png "GitHub Repository Settings")
 
 3. Select the `New repository secret` button.
 
@@ -247,9 +247,9 @@ Now that we have Docker images working locally, we can now work on the automatio
 
     ![The New secret form where we create the `CR_PAT` secret.](media/hol-ex1-task4-step4-1.png "New secret form")
 
-5. Select the `Actions` tab in your GitHub repository, find the `Publish Docker Container` workflow and select `Set up this workflow`.
+5. Select the `Actions` tab in your GitHub repository, find the `Publish Docker Container` workflow and select `Configure`.
 
-    ![The Publish Docker Container workflow that defines the series of GitHub actions used to build and push a docker container to a GitHub Container Registry.](media/hol-ex1-task4-step5-1.png "Publish Docker Container workflow")
+    ![The Publish Docker Container workflow that defines the series of GitHub actions used to build and push a docker container to a GitHub Container Registry.](media/hol-ex1-task4-step5-1-new.png "Publish Docker Container workflow")
 
 6. Rename the file to `fabrikam-web.yml`.
 
