@@ -117,6 +117,8 @@ We can use Dependabot to track the versions of the packages we use in our GitHub
     ![The GitHub Repository Security and Analysis blade under the GitHub repository Settings tab. We enable Dependabot alerts and security updates here.](media/hol-ex1-task2-step2-1.png "GitHub Security & Analysis Settings")
 
 3. To observe Dependabot issues, navigate to the `Security` tab and select the `View Dependabot alerts` link. You should arrive at the `Dependabot alerts` blade in the `Security` tab.
+ 
+    > **Note**: If this list is empty after several minutes, go to `Settings - Code security and analysis` and click on `Disable` for `Dependabot alerts`. After it is disabled, click on `Enable` for `Dependabot security updates` to enable it again. The alerts should appear now.
 
     ![GitHub Dependabot alerts in the Security tab.](media/hol-ex1-task2-step3-1.png "GitHub Dependabot alerts")
 
