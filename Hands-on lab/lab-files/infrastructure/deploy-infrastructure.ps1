@@ -3,8 +3,8 @@ $resourcegroupName = "fabmedical-rg-" + $studentprefix
 $cosmosDBName = "fabmedical-cdb-" + $studentprefix
 $webappName = "fabmedical-web-" + $studentprefix
 $planName = "fabmedical-plan-" + $studentprefix
-$location1 = "westeurope"
-$location2 = "northeurope"
+$location1 = "northeurope"
+$location2 = "swedencentral"
 
 # Create resource group
 az group create `
@@ -16,7 +16,7 @@ az cosmosdb create `
     --name $cosmosDBName `
     --resource-group $resourcegroupName `
     --locations regionName=$location1 failoverPriority=0 isZoneRedundant=False `
-    --locations regionName=$location2 failoverPriority=1 isZoneRedundant=True `
+    --locations regionName=$location2 failoverPriority=1 isZoneRedundant=False `
     --enable-multiple-write-locations `
     --kind MongoDB
 
