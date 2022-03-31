@@ -477,9 +477,7 @@ Once the infrastructure is in place, then we can set up the automation.
 
     > **Note**: Make sure to run the `deploy-webapp.ps1` script from the `infrastructure` folder
 
-5. Browse to the Azure Portal and verify that the Azure Web Application is running by checking the `Log stream` blade of the Azure Web Application detail page.
-
-    ![Azure Web Application Log Stream displaying the STDOUT and STDERR output of the running container.](media/hol-ex2-task2-step5-1.png "Azure Web Application Log Stream")
+5. Browse to the Azure Portal and verify that the Azure Web Application is deployed by going to `Deployment Center` and `Logs`. Check for a message that says `Started multi-container app`
 
 6. Browse to the `Overview` blade of the Azure Web Application detail page and find the web application URL. Browse to that URL to verify the deployment of the web application.
 
