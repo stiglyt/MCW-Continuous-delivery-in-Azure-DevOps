@@ -1,7 +1,7 @@
 ![Microsoft Cloud Workshops](https://github.com/Microsoft/MCW-Template-Cloud-Workshop/raw/main/Media/ms-cloud-workshop.png "Microsoft Cloud Workshops")
 
 <div class="MCWHeader1">
-Continuous delivery in Azure DevOps
+Continuous delivery in GitHub
 </div>
 
 <div class="MCWHeader2">
@@ -26,17 +26,16 @@ Microsoft and the trademarks listed at <https://www.microsoft.com/en-us/legal/in
 
 <!-- TOC -->
 
-- [Continuous Delivery in Azure DevOps hands-on lab step-by-step](#continuous-delivery-in-azure-devops-hands-on-lab-step-by-step)
+- [Continuous Delivery in GitHub hands-on lab step-by-step](#continuous-delivery-in-github-hands-on-lab-step-by-step)
   - [Abstract and learning objectives](#abstract-and-learning-objectives)
   - [Overview](#overview)
   - [Solution architecture](#solution-architecture)
   - [Requirements](#requirements)
   - [Before the hands-on lab](#before-the-hands-on-lab)
   - [Exercise 1: Continuous Integration](#exercise-1-continuous-integration)
-    - [Task 1: Connect Azure Board with GitHub](#task-1-connect-azure-board-with-github)
-    - [Task 2: Using Dependabot](#task-2-using-dependabot)
-    - [Task 3: Set up Local Infrastructure](#task-3-set-up-local-infrastructure)
-    - [Task 4: Build Automation with GitHub Registry](#task-4-build-automation-with-github-registry)
+    - [Task 1: Using Dependabot](#task-1-using-dependabot)
+    - [Task 2: Set up Local Infrastructure](#task-2-set-up-local-infrastructure)
+    - [Task 3: Build Automation with GitHub Registry](#task-3-build-automation-with-github-registry)
   - [Exercise 2: Continuous Delivery](#exercise-2-continuous-delivery)
     - [Task 1: Set up Cloud Infrastructure](#task-1-set-up-cloud-infrastructure)
     - [Task 2: Deployment Automation to Azure Web App](#task-2-deployment-automation-to-azure-web-app)
@@ -44,19 +43,16 @@ Microsoft and the trademarks listed at <https://www.microsoft.com/en-us/legal/in
   - [Exercise 3: Monitoring and logging in Azure](#exercise-3-monitoring-and-logging-in-azure)
     - [Task 1: Set up Application Insights](#task-1-set-up-application-insights)
     - [Task 2: Continuous Deployment with GitHub Actions](#task-2-continuous-deployment-with-github-actions)
-    - [Task 3: Continuous Deployment with Azure DevOps Pipelines](#task-3-continuous-deployment-with-azure-devops-pipelines)
   - [After the hands-on lab](#after-the-hands-on-lab)
     - [Task 1: Tear down Azure Resources](#task-1-tear-down-azure-resources)
 
 <!-- /TOC -->
 
-# Continuous Delivery in Azure DevOps hands-on lab step-by-step
+# Continuous Delivery in GitHub hands-on lab step-by-step
 
 ## Abstract and learning objectives
 
-In this hands-on lab, you will learn how to implement a solution with a combination of ARM templates and Azure DevOps to enable continuous delivery with several Azure PaaS services.
-
-At the end of this workshop, you will be better able to implement solutions for continuous delivery with GitHub in Azure, as well create an ARM (ARM) template to provision Azure resources, create an Azure DevOps project with a GitHub repository, and configure continuous delivery with GitHub.
+In this hands-on lab, you will learn how to implement a solution with GitHub that enables continuous delivery with several Azure PaaS services.
 
 ## Overview
 
@@ -70,33 +66,31 @@ Websites for medical conferences are typically low-budget websites because the c
 
 ## Requirements
 
-1. Microsoft Azure subscription must be pay-as-you-go or MSDN.
-   - Trial subscriptions will _not_ work.
-   - To complete this lab setup, ensure your account includes the following:
-     - Has the [Owner](https://docs.microsoft.com/en-us/azure/role-based-access-control/built-in-roles#owner) built-in role for the subscription you use.
-     - Is a [Member](https://docs.microsoft.com/azure/active-directory/fundamentals/users-default-permissions#member-and-guest-users) user in the Azure AD tenant you use. (Guest users will not have the necessary permissions.)
+1. Microsoft Azure subscription will be provided for the workshop. If using your own, it must be pay-as-you-go or MSDN.
+
+   - Trial subscriptions will _not_ work
+
+      - To complete this lab setup, ensure your account includes the following:
+
+      - Has the [Owner](https://docs.microsoft.com/en-us/azure/role-based-access-control/built-in-roles#owner) built-in role for the subscription you use.
+
+      - Is a [Member](https://docs.microsoft.com/azure/active-directory/fundamentals/users-default-permissions#member-and-guest-users) user in the Azure AD tenant you use. (Guest users will not have the necessary permissions.)
 
 2. A Microsoft [GitHub](https://github.com) account.
 
 3. Local machine or a virtual machine configured with:
 
-    - A browser, preferably Chrome, to be consistent with the lab implementation tests.
+    - A browser, preferably Chrome for consistency with the lab implementation tests.
 
-4. Git for Windows
+4. [Git for Windows](https://gitforwindows.org/)
 
 5. PowerShell
 
-    - As you will be running PowerShell scripts, make sure that the ExecutionPolicy is set properly. Consult [the Microsoft PowerShell documentation on execution policies](https://docs.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_execution_policies) for more details.
-
-6. Docker Desktop for Windows
+6. [Docker Desktop for Windows](https://www.docker.com/get-started/)
 
 7. [Azure CLI](https://docs.microsoft.com/en-us/cli/azure/)
 
-8. Angular - minimum 8.3.4.
-
-    - Angular depends on Node.js and npm.
-    - Consult [Setting up the local environment and workspace](https://angular.io/guide/setup-local) on the Angular site for guidance.
-    - This lab has been tested with [Node.js](https://nodejs.org/en/download/) version 16.13.0, which includes npm 8.1.0.
+8. [Node.js](https://nodejs.org/en/download/) (This lab has been tested with Node.js version 16.13.0, which includes npm 8.1.0.)
 
 ## Before the hands-on lab
 
@@ -108,47 +102,7 @@ Duration: 40 minutes
 
 After a requirements gathering effort, we find that Fabrikam Medical Conferences has many areas of potential improvement in their development workflow. Specifically, we conclude that there are a lot of manual tasks that can be automated. Automation potentially mitigates many of the recurring quality and security issues. Also, the dependencies between Fabrikam's developers' work and productivity are reduced. We will begin to address some of these efforts in this exercise to improve developer flow and establish continuous integration practices.
 
-### Task 1: Connect Azure Board with GitHub
-
-We can automate our project tracking with the Azure Board integration for GitHub.
-
-1. On the GitHub Marketplace, find the [Azure Boards Integration App](https://github.com/marketplace/azure-boards).
-
-    ![The Azure Boards Integration App on GitHub Marketplace that will provide a link between Azure DevOps Boards and GitHub issues.](media/hol-ex1-task1-step1.png "Azure Boards Integration App on GitHub Marketplace")
-
-2. Scroll to the bottom of the page and select `Install it for Free`.
-
-3. On the next page, select `Complete order and begin installation`.
-
-4. Select the lab files repository created in [Task 1 of the Before the HOL Instructions](Before%20the%20HOL%20-%20Continuous%20delivery%20in%20Azure%20DevOps.md#task-1-create-the-project-repo) and select `Install & Authorize`.
-
-    ![The GitHub Application Authorization page.](media/hol-ex1-task1-step4-1.png "GitHub Application Authorization")
-
-5. Select the Azure DevOps organization you signed into or created in the Before Hands-On Lab setup guide and select the Fabrikam project.
-
-    ![The Azure DevOps Integration Configuration form.](media/hol-ex1-task1-step5-1.png "Azure DevOps Integration Configuration")
-
-6. When the integration succeeds, you will be taken to the Azure DevOps Board. Follow the directions in the onboarding tutorial to create an initial Issue in the `To Do` Column and create a pull request associated with your Issue.
-
-    ![After completion of the onboarding tutorial. Two todo confirmation messages displayed.](media/hol-ex1-task1-step6-1.png "Get started and quick tip")
-
-7. Open the new Issue that the onboarding tutorial creates within Azure DevOps and observe the GitHub pull request and comment that are linked to the Azure DevOps board Issue.
-
-    ![Linked GitHub items in an Azure DevOps issue in Boards.](media/hol-ex1-task1-step7-1.png "GitHub Pull Request and Comment")
-
-8. In GitHub, browse to the `Pull Requests` tab of the lab files repository created in [Task 1 of the Before the HOL Instructions](Before%20the%20HOL%20-%20Continuous%20delivery%20in%20Azure%20DevOps.md#task-1-create-the-project-repo) and open the pull request that was created in the onboarding tutorial for the Azure Boards Integration App. Note the `AB#1` annotation in the pull request comments - this annotation signals to Azure DevOps that this pull request comment should be linked to Issue #1 in Azure Boards.
-
-    ![Pull request detail in GitHub created by onboarding tutorial in previous steps.](media/hol-ex1-task1-step8-1.png "Pull Request detail")
-
-9. Select the `Files changed` tab within the pull request detail and observe the change to the README.md associated with this pull request. After reviewing the changes, go back to the `Conversation` tab. Select the `Merge pull request` button and confirm the following prompt to merge the pull request into the `main` branch.
-
-    ![The file changes associated with the pull request.](media/hol-ex1-task1-step9-1.png "Pull Request Files Changed tab")
-
-10. In Azure DevOps Boards, find the work item and observe that the issue has been moved to the `Done` column on completion of the pull request.
-
-    ![A work item with a linked GitHub commit illustrating the link between Azure DevOps Boards and GitHub issues.](media/hol-ex1-task1-step10-1.png "Work Item with a Linked GitHub Commit")
-
-### Task 2: Using Dependabot
+### Task 1: Using Dependabot
 
 We can use Dependabot to track the versions of the packages we use in our GitHub repository.
 
@@ -190,7 +144,7 @@ We can use Dependabot to track the versions of the packages we use in our GitHub
     git pull
     ```
 
-### Task 3: Set up Local Infrastructure
+### Task 2: Set up Local Infrastructure
 
 We are going to set up the local infrastructure using Docker containers. There are three images we will be working with:
 
@@ -229,7 +183,7 @@ You will need to make some edits to files before running these locally.
     git push
     ```
 
-### Task 4: Build Automation with GitHub Registry
+### Task 3: Build Automation with GitHub Registry
 
 Now that we have Docker images working locally, we can now work on the automation.
 
@@ -574,11 +528,7 @@ In many enterprises, committing to `main` is restricted. Branch policies are use
     error: failed to push some refs to 'https://github.com/YOUR_GITHUB_ACCOUNT/mcw-continuous-delivery-lab-files.git'
     ```
 
-4. Create a new issue for modifying the README.md in Azure Boards
-
-    !["New issue for updating README.md added to Azure Boards"](media/hol-ex2-task3-step4-1.png "Azure Boards")
-
-5. Create a branch from `main` and name it `feature/update-readme`. Push the changes to the README.md to the remote repository.
+4. Create a branch from `main` and name it `feature/update-readme`. Push the changes to the README.md to the remote repository.
 
     ```pwsh
     git checkout main
@@ -588,19 +538,15 @@ In many enterprises, committing to `main` is restricted. Branch policies are use
 
     > **Note**: Because the changes had already been committed locally to the `main` branch in step 3, the changes already exist in the `feature/update-readme` branch - this is why we issue a `git push` immediately after branching from the local `main` branch.
 
-6. Create a pull request to merge `feature/update-readme` into `main` in GitHub. Add the annotation `AB#2` in the description of the pull request to link it with the new Azure Boards issue in step 4.
+5. Create a pull request to merge `feature/update-readme` into `main` in GitHub.
 
     > **Note**: The `Docker` build workflow executes as part of the status checks.
 
-7. Select the `Merge pull request` button after the build completes successfully to merge the Pull Request into `main`.
+6. Select the `Merge pull request` button after the build completes successfully to merge the Pull Request into `main`.
 
     !["Pull request for merging the feature/update-main branch into main"](media/hol-ex2-task3-step7-1.png "Create pull request")
 
     > **Note**: Under normal circumstances, this pull request would be reviewed by someone other than the author of the pull request. For now, use your administrator privileges to force merge of the pull request.
-
-8. Observe in Azure Boards the Issue is appropriately linked to the GitHub comment.
-
-    !["The Update README.md issue with the comment from the pull request created in step 6 linked"](media/hol-ex2-task3-step8-1.png "Azure Boards Issue")
 
 ## Exercise 3: Monitoring and logging in Azure
 
@@ -794,230 +740,6 @@ Now that the infrastructure is in place, we can set up continuous deployment wit
     ![GitHub Action detail reflecting Docker ](media/hol-ex3-task2-step8-1.png "GitHub Action detail")
 
 9. Perform a `git pull` on your local repository folder to fetch the latest changes from GitHub.
-
-### Task 3: Continuous Deployment with Azure DevOps Pipelines
-
-> **Note**: This section demonstrates Continuous Deployment via ADO pipelines, which is equivalent to the Continuous Deployment via GitHub Actions demonstrated in Task 2. For this reason, disabling GitHub action here is critical so that both pipelines (ADO & GitHub Actions) don't interfere with each other.
-> **Note**: To complete [Exercise 3: Task 3](#task-3-continuous-deployment-with-azure-devops-pipelines), the student will need to request a free grant of parallel jobs in Azure Pipelines via [this form](https://aka.ms/azpipelines-parallelism-request). More information can be found [here regarding changes in Azure Pipelines Grant for Public Projects](https://devblogs.microsoft.com/devops/change-in-azure-pipelines-grant-for-public-projects/)
-
-1. Disable your GitHub Actions by adding the `branches-ignore` property to the existing workflows in your lab files repository (located under the `.github/workflows` folder).
-
-    ```pwsh
-    on:
-      push:
-        branches-ignore:    # <-- Add this list property
-          - '**'            # <-- with '**' to disable all branches
-    ```
-
-2. Navigate to your Azure DevOps `Fabrikam` project, select the `Project Settings` blade, and open the `Service Connections` tab.
-
-3. Create a new `Docker Registry` service connection and set the values to:
-
-    - Docker Registry: <https://ghcr.io>
-    - Docker ID: [GitHub account name]
-    - Docker Password: [GitHub Personal Access Token]
-    - Service connection name: GitHub Container Registry
-
-    ![Azure DevOps Project Service Connection Configuration that establishes the credentials necessary for Azure DevOps to push to the GitHub Container Registry.](media/hol-ex3-task3-step3-1.png "Azure DevOps Project Service Connection Configuration")
-
-4. Navigate to your Azure DevOps `Fabrikam` project, select the `Pipelines` blade, and create a new pipeline.
-
-    ![Initial creation page for a new Azure DevOps Pipeline.](media/hol-ex3-task3-step4-1.png "Azure DevOps Pipelines")
-
-5. In the `Connect` tab, choose the `GitHub` selection.
-
-    ![Azure DevOps Pipeline Connections page where we associate the GitHub repository with this pipeline.](media/hol-ex3-task3-step5-1.png "Azure DevOps Pipeline Connections")
-
-6. Select your GitHub lab files repository. Azure DevOps will redirect you to authorize yourself with GitHub. Log in and select the repository that you want to allow Azure DevOps to access.
-
-7. In the `Configure` tab, choose the `Starter Pipeline`.
-
-    ![Selecting the Starter pipeline on the Configure your pipeline step in Azure DevOps.](media/hol-ex3-task3-step7-1.png "Selecting the Starter pipeline")
-
-8. Remove all the steps from the YAML. The empty pipeline should look like the following:
-
-    ```yaml
-    # Starter pipeline
-    # Start with a minimal pipeline that you can customize to build and deploy your code.
-    # Add steps that build, run tests, deploy, and more:
-    # https://aka.ms/yaml
-
-    trigger:
-    - main
-
-    pool:
-      vmImage: ubuntu-latest
-
-    steps:
-    ```
-
-9. In the sidebar, find the `Docker Compose` task and configure it with the following fields, then select the **Add** button:
-
-    - Container Registry Type: Container Registry
-    - Docker Registry Service Connection: GitHub Container Registry (created in step 3)
-    - Docker Compose File: **/docker-compose.yml
-    - Additional Docker Compose Files: build.docker-compose.yml
-    - Action: Build Service Images
-    - Additional Image Tags = $(Build.BuildNumber)
-
-    ![Docker Compose Task definition in the AzureDevOps pipeline.](media/hol-ex3-task3-step9-1.png "Docker Compose Task")
-    ![Docker Compose Task Values in the AzureDevOps pipeline.](media/hol-ex3-task3-step9-2.png "Docker Compose Task Values")
-
-    >**Note**: If the sidebar doesn't appear, you may need to select `Show assistant`.
-
-10. Repeat step 9 and add another `Docker Compose` task and configure it with the following fields:
-
-    - Container Registry Type: Container Registry
-    - Docker Registry Service Connection: GitHub Container Registry (created in step 3)
-    - Docker Compose File: **/docker-compose.yml
-    - Additional Docker Compose Files: build.docker-compose.yml
-    - Action: Push Service Images
-    - Additional Image Tags = $(Build.BuildNumber)
-
-    >**Note**: Pay close attention to the **Action** in Step 10. This is where it differs from Step 9.
-
-    The YAML should be:
-
-    ```yaml
-    # Starter pipeline
-    # Start with a minimal pipeline that you can customize to build and deploy your code.
-    # Add steps that build, run tests, deploy, and more:
-    # https://aka.ms/yaml
-
-    trigger:
-    - main
-
-    pool:
-    vmImage: ubuntu-latest
-
-    steps:
-    - task: DockerCompose@0
-    inputs:
-        containerregistrytype: 'Container Registry'
-        dockerRegistryEndpoint: 'GitHub Container Registry'
-        dockerComposeFile: '**/docker-compose.yml'
-        additionalDockerComposeFiles: 'build.docker-compose.yml'
-        action: 'Push services'
-        additionalImageTags: '$(Build.BuildNumber)'
-    - task: DockerCompose@0
-    inputs:
-        containerregistrytype: 'Container Registry'
-        dockerRegistryEndpoint: 'GitHub Container Registry'
-        dockerComposeFile: '**/docker-compose.yml'
-        additionalDockerComposeFiles: 'build.docker-compose.yml'
-        action: 'Push services'
-        additionalImageTags: '$(Build.BuildNumber)'
-    ```
-
-11. Save and run the build. New docker images will be built and pushed to the GitHub package registry.
-
-    >**Note**: You may need to grant permission for the pipeline to use the service connection before the run happens.
-
-    ![Run detail of the Azure DevOps pipeline previously created.](media/hol-ex3-task3-step11-1.png "Build Pipeline Run detail")
-
-    If you haven't been granted the parallelism, your job will fail with the following message:
-
-    ```text
-    ##[error]No hosted parallelism has been purchased or granted. To request a free parallelism grant, please fill out the following form https://aka.ms/azpipelines-parallelism-request
-    ```
-
-    Once parallelism is granted, then your pipeline can run.
-
-12. Navigate to your `Fabrikam` project in Azure DevOps and select the `Project Settings` blade. From there, select the `Service Connections` tab.
-
-13. Create a new `Azure Resource Manager` service connection and choose `Service Principal (automatic)`.
-
-14. Choose your target subscription and resource group and set the `Service Connection` name to `Fabrikam-Azure`. Save the service connection - we will reference it in a later step.
-
-15. Open the build pipeline in `Edit` mode, and then select the `Variables` button on the top-right corner of the pipeline editor. Add a secret variable `CR_PAT`, check the `Keep this value secret` checkbox, and copy the GitHub Personal Access Token from the Before the Hands-on lab guided instruction into the `Value` field. Save the pipeline variable - we will reference it in a later step.
-
-    ![Adding a new Pipeline Variable to an existing Azure DevOps pipeline.](media/hol-ex3-task3-step15-1.png "New Pipeline Variable")
-
-16. Modify the build pipeline YAML to split into a build stage and a deploy stage, as follows.
-
-    >**Note**: Pay close attention to the `DeployProd` stage, as you need to add your abbreviation to the `arguments` section.
-
-    ```yaml
-    # Starter pipeline
-    # Start with a minimal pipeline that you can customize to build and deploy your code.
-    # Add steps that build, run tests, deploy, and more:
-    # https://aka.ms/yaml
-
-    trigger:
-    - main
-
-    pool:
-      vmImage: ubuntu-latest
-
-    stages:
-    - stage: build
-      jobs:
-      - job: 'BuildAndPublish'
-        displayName: 'Build and Publish'
-        steps:
-        - task: DockerCompose@0
-          inputs:
-            containerregistrytype: 'Container Registry'
-            dockerRegistryEndpoint: 'GitHub Container Registry'
-            dockerComposeFile: '**/docker-compose.yml'
-            additionalDockerComposeFiles: 'build.docker-compose.yml'
-            action: 'Build services'
-            additionalImageTags: '$(Build.BuildNumber)'
-        - task: DockerCompose@0
-          inputs:
-            containerregistrytype: 'Container Registry'
-            dockerRegistryEndpoint: 'GitHub Container Registry'
-            dockerComposeFile: '**/docker-compose.yml'
-            additionalDockerComposeFiles: 'build.docker-compose.yml'
-            action: 'Push services'
-            additionalImageTags: '$(Build.BuildNumber)'
-
-    - stage: DeployProd
-      dependsOn: build
-      jobs:
-      - deployment: webapp
-        environment: production
-        strategy:
-          runOnce:
-            deploy:
-              steps:
-              - checkout: self
-
-              - powershell: |
-                  (gc .\docker-compose.yml) `
-                    -replace ':latest',':$(Build.BuildNumber)' | `
-                    set-content .\docker-compose.yml
-                    
-              - task: AzureCLI@2
-                inputs:
-                  azureSubscription: 'Fabrikam-Azure' # <-- The service
-                  scriptType: 'pscore'                # connection from step 14
-                  scriptLocation: 'scriptPath'
-                  scriptPath: './infrastructure/deploy-webapp.ps1'
-                  workingDirectory: ./infrastructure
-                  arguments: 'Your 3 letter abbreviation here'         # <-- This should be your custom
-                env:                       # lowercase three character 
-                  CR_PAT: $(CR_PAT)  # prefix from an earlier exercise.
-                                # ^^^^^^
-                                # ||||||
-                                # The pipeline variable from step 15
-    ```
-
-17. Navigate to the `Environments` category with the `Pipelines` blade in the `Fabrikam` project and select the `production` environment.
-
-    ![Select Environments under the Pipelines section. Then select the production environment.](media/hol-ex3-task3-step17-1.png "Production environment selection in the Environments section")
-
-18. From the vertical ellipsis menu button in the top-right corner, select `Approvals and checks`.
-
-    ![Approvals and checks selection in the vertical ellipsis menu in the top right corner of the Azure DevOps pipeline editor interface.](media/hol-ex3-task3-step18-1.png "Approvals and checks selection")
-
-19. Add an `Approvals` check. Add your account as an `Approver` and create the check.
-
-    ![Adding an account as an `Approver` for an Approvals check.](media/hol-ex3-task3-step19-1.png "Checks selection")
-
-20. Run the build pipeline and note how the pipeline waits before moving to the `DeployProd` stage. You will need to approve the request before the `DeployProd` stage runs.
-
-    ![Reviewing DeployProd stage transition request during a pipeline execution.](media/review-deploy-to-app-service.png "Reviewing pipeline request")
 
 ## After the hands-on lab
 
