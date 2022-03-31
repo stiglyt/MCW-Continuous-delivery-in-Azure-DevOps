@@ -1,7 +1,7 @@
 ![Microsoft Cloud Workshops](https://github.com/microsoft/MCW-Template-Cloud-Workshop/raw/main/Media/ms-cloud-workshop.png "Microsoft Cloud Workshops")
 
 <div class="MCWHeader1">
-Continuous delivery in Azure DevOps
+Continuous delivery in GitHub
 </div>
 
 <div class="MCWHeader2">
@@ -26,17 +26,15 @@ Microsoft and the trademarks listed at <https://www.microsoft.com/en-us/legal/in
 
 <!-- TOC -->
 
-- [Continuous Delivery in Azure DevOps before the hands-on lab setup guide](#continuous-delivery-in-azure-devops-before-the-hands-on-lab-setup-guide)
+- [Continuous Delivery in GitHub before the hands-on lab setup guide](#continuous-delivery-in-github-before-the-hands-on-lab-setup-guide)
   - [Requirements](#requirements)
   - [Before the hands-on lab](#before-the-hands-on-lab)
     - [Task 1: Create the Project Repo](#task-1-create-the-project-repo)
     - [Task 2: Create GitHub Personal Access Token](#task-2-create-github-personal-access-token)
-    - [Task 3: Create Azure DevOps Personal Access Token](#task-3-create-azure-devops-personal-access-token)
-    - [Task 4: Create Azure DevOps Project](#task-4-create-azure-devops-project)
 
 <!-- /TOC -->
 
-# Continuous Delivery in Azure DevOps before the hands-on lab setup guide
+# Continuous Delivery in GitHub before the hands-on lab setup guide
 
 You should follow all steps in this document *before* performing the Hands-on lab. Pay close attention to product versions, as the version numbers called out in the lab have been tested and shown successful for the lab.
 
