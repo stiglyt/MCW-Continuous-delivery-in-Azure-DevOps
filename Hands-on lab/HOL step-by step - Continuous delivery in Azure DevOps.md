@@ -221,7 +221,13 @@ You will need to make some edits to files before running these locally.
 
     ![The docker-compose log output observed when running `docker-compose up` on our docker-compose harness.](media/hol-ex1-task3-step4-2.png "docker-compose log output")
 
-5. Commit and push your changes to your GitHub repository.
+5. Commit and push your changes to your GitHub repository. From the root of the repository, execute the following:
+
+    ```pwsh
+    git add .
+    git commit -m "Added correct github username"
+    git push
+    ```
 
 ### Task 4: Build Automation with GitHub Registry
 
@@ -638,9 +644,9 @@ Now we want to set up Application Insights to gain some insights on how our site
 
     const app = express();
 
-    const appInsights = require("applicationinsights");         # <-- Add these lines here
-    appInsights.setup("55cade0c-197e-4489-961c-51e2e6423ea2");  # <-- Make sure AI Inst. Key matches
-    appInsights.start();                                        # <-- key from step 2.
+    const appInsights = require("applicationinsights");                                  # <-- Add these lines here
+    appInsights.setup("55cade0c-197e-4489-961c-51e2e6423ea2").setSendLiveMetrics(true);  # <-- Make sure AI Inst. Key matches key from step 2.
+    appInsights.start();
 
     app.use(express.static(path.join(__dirname, 'dist/content-web')));
     const contentApiUrl = process.env.CONTENT_API_URL || "http://localhost:3001";
