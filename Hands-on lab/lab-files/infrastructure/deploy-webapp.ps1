@@ -12,3 +12,7 @@ az webapp config container set `
     --multicontainer-config-type COMPOSE `
     --name $webappName `
     --resource-group $resourcegroupName
+
+az webapp restart `
+    --name $webappName `
+    --resource-group $resourcegroupName
