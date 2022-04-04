@@ -765,7 +765,7 @@ Now that the infrastructure is in place, we can set up continuous deployment wit
 
 8. Observe that the action deploys the images to the Azure web application.
 
-    ![GitHub Action detail reflecting Docker ](media/hol-ex3-task2-step8-1.png "GitHub Action detail")
+    ![GitHub Action detail reflecting Docker ](media/hol-ex3-task2-step8-1-new.png "GitHub Action detail")
 
 9. Perform a `git pull` on your local repository folder to fetch the latest changes from GitHub.
 
