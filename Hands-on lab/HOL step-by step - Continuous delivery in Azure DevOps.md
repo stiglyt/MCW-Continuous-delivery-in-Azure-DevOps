@@ -42,7 +42,8 @@ Microsoft and the trademarks listed at <https://www.microsoft.com/en-us/legal/in
     - [Task 3: Branch Policies in GitHub (Optional)](#task-3-branch-policies-in-github-optional)
   - [Exercise 3: Monitoring and logging in Azure](#exercise-3-monitoring-and-logging-in-azure)
     - [Task 1: Set up Application Insights](#task-1-set-up-application-insights)
-    - [Task 2: Continuous Deployment with GitHub Actions](#task-2-continuous-deployment-with-github-actions)
+    - [Task 2: Improve Build Automation](#task-2-improve-build-automation)
+    - [Task 3: Continuous Deployment with GitHub Actions](#task-3-continuous-deployment-with-github-actions)
   - [After the hands-on lab](#after-the-hands-on-lab)
     - [Task 1: Tear down Azure Resources](#task-1-tear-down-azure-resources)
 
@@ -614,7 +615,22 @@ Now we want to set up Application Insights to gain some insights on how our site
 
 8. Visit the deployed website and check Application Insights in the Azure Portal to see instrumentation data.
 
-### Task 2: Continuous Deployment with GitHub Actions
+### Task 2: Improve Build Automation
+
+When adding support for Application Insights in the previous task, you see that all three Actions run, even if the change was only in the `content-web` folder. To improve this process, we can add path filtering to the Actions so that they only run for changes in their respective folder.
+
+1. In your lab files GitHub repository, navigate to the `.github/workflows` folder.
+
+2. Click on `fabrikam-web.yml` and open it in edit mode by clicking the pencil button. Add a new line after the `branches: [ main ]` line like this:
+
+    ```yaml
+    branches: [ main ]
+    paths:                  # add these
+      - 'content-web/**'    # two lines
+
+3. Setup path filtering for `fabrikam-api.yml` and `fabrikam-init.yml` in the same manner, adding the path `content-api/**` and `content-init/**` respectively.
+
+### Task 3: Continuous Deployment with GitHub Actions
 
 Now that the infrastructure is in place, we can set up continuous deployment with GitHub Actions.
 
