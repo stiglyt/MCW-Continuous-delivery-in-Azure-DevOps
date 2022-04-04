@@ -787,7 +787,8 @@ Now that the lab is done, we are done with our Azure resources. It is good pract
     $studentprefix ="Your 3 letter abbreviation here"
     $resourcegroupName = "fabmedical-rg-" + $studentprefix
 
-    az ad sp delete --id "fabmedical-$studentprefix"
+    $spobjectid = az ad sp list --display-name "fabmedical-$studentprefix" --query "[0].objectId" -o tsv 
+    az ad sp delete --id $spobjectid
     az group delete --name $resourceGroupName
     ```
 
