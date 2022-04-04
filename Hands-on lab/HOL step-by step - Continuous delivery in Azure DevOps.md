@@ -219,8 +219,20 @@ Now that we have Docker images working locally, we can now work on the automatio
       # github.repository as <account>/<repo>
       IMAGE_NAME: fabrikam-web
     ```
+8. Change the pasword to use `secrets.CR_PAT` instead of `secrets.GITHUB_TOKEN` in the `Log into registry ${{ env.REGISTRY }}` step.
 
-8. Add explicit path to `Dockerfile` and context path to the `Build and push Docker image` step. This step will ensure the correct `Dockerfile` file can be found.
+    ```yaml
+    # Login against a Docker registry except on PR
+    # https://github.com/docker/login-action
+    - name: Log into registry ${{ env.REGISTRY }}
+      if: github.event_name != 'pull_request'
+      uses: docker/login-action@28218f9b04b4f3f62068d7b6ce6ca5b26e35336c
+      with:
+        registry: ${{ env.REGISTRY }}
+        username: ${{ github.actor }}
+        password: ${{ secrets.CR_PAT }}
+    ```
+9. Add explicit path to `Dockerfile` and context path to the `Build and push Docker image` step. This step will ensure the correct `Dockerfile` file can be found.
 
     ```yaml
     # Build and push Docker image with Buildx (don't push on PR)
@@ -235,29 +247,30 @@ Now that we have Docker images working locally, we can now work on the automatio
         tags: ${{ steps.meta.outputs.tags }}
         labels: ${{ steps.meta.outputs.labels }}
     ```
+10. Remove the last step named `Sign the published Docker image`
 
-9. Commit the file to the repository.
+11. Commit the file to the repository.
 
-10. The GitHub Action is now running and will automatically build and push the container to GitHub registry.
+12. The GitHub Action is now running and will automatically build and push the container to GitHub registry.
 
     ![Summary of running Docker workflow executing in GitHub Actions tab of repository.](media/hol-ex1-task4-step10-1.png "GitHub Actions")
 
     ![Detail of running Docker workflow.](media/hol-ex1-task4-step10-2.png "GitHub Action Detail")
 
-11. Set up workflows for `content-api` and `content-init` in the same manner.
+13. Set up workflows for `content-api` and `content-init` in the same manner.
     - In the `env:` section, update the **IMAGE_NAME** to `fabrikam-api` or `fabrikam-init` and set **REGISTRY** to `ghcr.io/${{ github.actor }}`.
+    - In the `jobs:` section, in the `Log into registry ${{ env.REGISTRY }}` step, change the pasword to use `secrets.CR_PAT` instead of `secrets.GITHUB_TOKEN`.
     - In the `jobs:` section, in the `Build and push Docker image` step, set the **file** and **context** paths to the respective `content-api` or `content-init` folders.
+    - In the `jobs:` section, remove the last step named `Sign the published Docker image`.
     - Save the YAML files as `fabrikam-api.yml` and `fabrikam-init.yml`, respectively.
 
     > **Note**: You can optionally add `workflow_dispatch:` in the `on:` trigger section to set a manual trigger for the GitHub Actions workflow.
 
-    > **Note**: If you encounter any errors due to `cosign`, feel free to remove the image signing section from the workflow, as it is not needed to complete the lab. You could alternatively add a manual trigger (see above) and try running the workflow again, to determine if the error is transient.
-
-12. Navigate to the `Packages` tab in your GitHub account and verify that the container images have been built and pushed to the container registry.
+14. Navigate to the `Packages` tab in your GitHub account and verify that the container images have been built and pushed to the container registry.
 
     ![GitHub Packages tab listing summary of container images that have been pushed to the container registry.](media/hol-ex1-task4-step12-1.png "GitHub Packages")
 
-13. Pull the latest changes from your GitHub repository.
+15. Pull the latest changes from your GitHub repository.
 
 ## Exercise 2: Continuous Delivery
 
@@ -674,18 +687,18 @@ Now that the infrastructure is in place, we can set up continuous deployment wit
 
     ![The `New workflow` button in the repository GitHub Actions tab.](media/hol-ex3-task2-step1-1.png "GitHub Actions")
 
-5. Select the `Set up a workflow yourself` link. Name the new YAML file `docker-publish.yml`.  
+5. Select the `Set up a workflow yourself` link. Name the new YAML file `deploy-webapp.yml`.  
 
     ![The Choose a workflow options are listed and the link to set up a workflow yourself is highlighted for emphasis.](media/hol-ex3-task2-step5-1.png "GitHub Actions")
 
-6. Change the `name` property to `Docker Compose Build and Deploy`. Modify the YAML to reflect the following.
+6. By using a combination of `paths-ignore` and `registry_package`, the Action will only run and deploy the application after a package has been published, or if there are changes in the repository that are not in the `content-api`, `content-init` or `content-web`. Modify the YAML to reflect the following.
 
     >**Note**: Make sure to change the student prefix for the last action in the `build` job.
 
     ```yaml
     # This is a basic workflow to help you get started with Actions
 
-    name: Docker Compose Build and Deploy
+    name: Deploy WebApp
 
     env:
       REGISTRY: ghcr.io
@@ -695,8 +708,12 @@ Now that the infrastructure is in place, we can set up continuous deployment wit
       # Triggers the workflow on push or pull request events but only for the main branch
       push:
         branches: [ main ]
-      pull_request:
-        branches: [ main ]
+        paths-ignore:
+          - 'content-api/**'
+          - 'content-web/**'
+          - 'content-init/**'
+      registry_package:
+        types: [published]
 
       # Allows you to run this workflow manually from the Actions tab
       workflow_dispatch:
@@ -722,12 +739,7 @@ Now that the infrastructure is in place, we can set up continuous deployment wit
             registry: ${{ env.REGISTRY }}
             username: ${{ github.actor }}
             password: ${{ secrets.CR_PAT }}
-
-        - name: Build and Push image
-          run: |
-            docker-compose -f docker-compose.yml -f build.docker-compose.yml build
-            docker-compose -f docker-compose.yml -f build.docker-compose.yml push
-
+        
         - name: Login on Azure CLI
           uses: azure/login@v1.1
           with:
@@ -751,11 +763,13 @@ Now that the infrastructure is in place, we can set up continuous deployment wit
 
     ![GitHub Actions workflow file syntax error.](media/github-actions-workflow-file-error.png "Syntax error in Actions workflow file")
 
-8. Observe that the action builds the docker images, pushes them to the container registry, and deploys them to the Azure web application.
+8. Observe that the action deploys the images to the Azure web application.
 
     ![GitHub Action detail reflecting Docker ](media/hol-ex3-task2-step8-1.png "GitHub Action detail")
 
 9. Perform a `git pull` on your local repository folder to fetch the latest changes from GitHub.
+
+10. Make a modification in a file in either `content-api`, `content-init` or `content-web` folder and push the changes. Observe that the matching Action is started, followed by the `Deploy WebApp` Action.
 
 ## After the hands-on lab
 
