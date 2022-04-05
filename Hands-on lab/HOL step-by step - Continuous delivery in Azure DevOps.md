@@ -29,7 +29,6 @@ Microsoft and the trademarks listed at <https://www.microsoft.com/en-us/legal/in
 - [Continuous Delivery in GitHub hands-on lab step-by-step](#continuous-delivery-in-github-hands-on-lab-step-by-step)
   - [Abstract and learning objectives](#abstract-and-learning-objectives)
   - [Overview](#overview)
-  - [Solution architecture](#solution-architecture)
   - [Requirements](#requirements)
   - [Before the hands-on lab](#before-the-hands-on-lab)
   - [Exercise 1: Continuous Integration](#exercise-1-continuous-integration)
@@ -60,10 +59,6 @@ In this hands-on lab, you will learn how to implement a solution with GitHub tha
 Fabrikam Medical Conferences provide conference website services tailored to the medical community. Over ten years, they have built conference sites for a small conference organizer. Through word of mouth, Fabrikam Medical Conferences has become a well-known industry brand handling over 100 conferences per year and growing.
 
 Websites for medical conferences are typically low-budget websites because the conferences usually have between 100 to 1500 attendees. At the same time, the conference owners have significant customization and change demands that require turnaround on a dime to the live sites. These changes can impact various aspects of the system from UI through to the back end, including conference registration and payment terms.
-
-## Solution architecture
-
-![Solution architecture diagram illustrating the use of GitHub and Azure DevOps.](media/diagram.png "Desired solution architecture")
 
 ## Requirements
 
