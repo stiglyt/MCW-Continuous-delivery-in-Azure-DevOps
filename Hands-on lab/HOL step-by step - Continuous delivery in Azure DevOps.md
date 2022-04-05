@@ -40,7 +40,7 @@ Microsoft and the trademarks listed at <https://www.microsoft.com/en-us/legal/in
     - [Task 1: Set up Cloud Infrastructure](#task-1-set-up-cloud-infrastructure)
     - [Task 2: Deployment Automation to Azure Web App](#task-2-deployment-automation-to-azure-web-app)
     - [Task 3: Branch Policies in GitHub (Optional)](#task-3-branch-policies-in-github-optional)
-  - [Exercise 3: Monitoring and logging in Azure](#exercise-3-monitoring-and-logging-in-azure)
+  - [Exercise 3: Monitoring and deployment improvements](#exercise-3-monitoring-and-deployment-improvements)
     - [Task 1: Set up Application Insights](#task-1-set-up-application-insights)
     - [Task 2: Improve Build Automation](#task-2-improve-build-automation)
     - [Task 3: Continuous Deployment with GitHub Actions](#task-3-continuous-deployment-with-github-actions)
@@ -562,7 +562,7 @@ In many enterprises, committing to `main` is restricted. Branch policies are use
 
     > **Note**: Under normal circumstances, this pull request would be reviewed by someone other than the author of the pull request. For now, use your administrator privileges to force merge of the pull request.
 
-## Exercise 3: Monitoring and logging in Azure
+## Exercise 3: Monitoring and deployment improvements
 
 Duration: 40 minutes
 
