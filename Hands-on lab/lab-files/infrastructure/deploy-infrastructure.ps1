@@ -3,7 +3,7 @@ $resourcegroupName = "fabmedical-rg-" + $studentprefix
 $cosmosDBName = "fabmedical-cdb-" + $studentprefix
 $webappName = "fabmedical-web-" + $studentprefix
 $planName = "fabmedical-plan-" + $studentprefix
-$location1 = "northeurope"
+$location1 = "norwayeast"
 $location2 = "swedencentral"
 
 # Create resource group
