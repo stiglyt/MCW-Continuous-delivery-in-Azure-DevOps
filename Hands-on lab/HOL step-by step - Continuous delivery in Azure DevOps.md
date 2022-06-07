@@ -287,7 +287,7 @@ First, we need to set up the cloud infrastructure. We will use PowerShell script
     $cosmosDBName = "fabmedical-cdb-" + $studentprefix
     $webappName = "fabmedical-web-" + $studentprefix
     $planName = "fabmedical-plan-" + $studentprefix
-    $location1 = "northeurope"
+    $location1 = "norwayeast"
     $location2 = "swedencentral"
     ```
 
